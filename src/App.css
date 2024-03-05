@@ -1,0 +1,56 @@
+
+.no-nbar {
+    display: none;
+}
+
+.sticky {
+    position: fixed;
+} 
+
+.images {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: 25%;
+    filter: brightness(0%) saturate(100%) blur(0%);
+}
+
+.logo {               
+    height: 350px;
+    width: 350px;
+    position: absolute;
+    filter: brightness(100%)
+}
+
+.nav-logo {               
+    height: 70px;
+    width: auto;
+    filter: brightness(100%);
+}
+
+.imageCenterText {
+    position: absolute;
+    text-align: center;
+    font-size: 9vw;
+    color: white;
+    font-style: italic;
+}
+
+.infoText {
+    text-align: center;
+    font-size: 8vw;
+    color: black;
+}
+
+.pageContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    flex-direction: column;
+}
+
+body{
+    margin:0;
+}
