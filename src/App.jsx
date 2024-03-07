@@ -9,16 +9,16 @@ import './App.css';
 import ImageCrop from './components/ImageCrop';
 import Nbar from './components/Nbar';
 import RSVPForm from './components/RSVPForm';
+import ThemeProvider from 'react-bootstrap/ThemeProvider'
 
 function App() {
   
 
   return (
     <> 
-    {/* <ThemeProvider
+    <ThemeProvider
       breakpoints={['xxxl', 'xxl', 'xl', 'lg', 'md', 'sm', 'xs', 'xxs']}
-      minBreakpoint="xxs"
-    > */}
+      minBreakpoint="xxs">
 
     <Nbar/>
     
@@ -120,10 +120,11 @@ function App() {
         <p className='imageCenterText'>RSVPs</p>     
       </div> 
       <div className='pageContainer'>
+      <p className='infoText'>RSVP Form</p> 
       <RSVPForm></RSVPForm>
       </div>
 
-    {/* </ThemeProvider> */}
+    </ThemeProvider>
     </>
   )
 }
