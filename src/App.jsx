@@ -13,7 +13,8 @@ import ThemeProvider from 'react-bootstrap/ThemeProvider'
 import { api } from './utilities'
 
 function App() {
-  // const {user, setUser} = useState(null)
+// const {user, setUser} = useState(null)
+
 App.jsx
   const test_connection = async() => {
     const response = await api.get("test/")

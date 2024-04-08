@@ -1,16 +1,32 @@
+import { useState, } from "react";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { api } from "../utilities";
 
-function SignupForm() {
-  const handleSignupForm = (e) => {
+const SignUp = () => {
+  const [emailInput, setEmailInput] = useState("");
+  const [passwordInput, setPasswordInput] = useState("");
+
+  const signupUser = async(e) => {
     e.preventDefault();
-    console.log('form submit')
+    const response = await api.post("users/signup/", { email: emailInput, password: passwordInput})
+    if (response.status === 201) {
+      console.log('successfuly signed up, user info', response.data);
+      const { token, user } = response.data;
+      localStorage.setItem("token", token)
+      api.defaults.headers.common["Authorization"] = `Token ${token}`
+    }
   };
+
+
   return (
-    <Form onSubmit={handleSignupForm}>
+    <Form onSubmit={signupUser}>
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label>Email address</Form.Label>
-        <Form.Control type="email" placeholder="Enter email" />
+        <Form.Control 
+          onChange={(e) => setEmailInput(e.target.value)}
+          type="email" 
+          placeholder="Enter email" />
         <Form.Text className="text-muted">
           We'll never share your email with anyone else.
         </Form.Text>
@@ -18,7 +34,11 @@ function SignupForm() {
 
       <Form.Group className="mb-3" controlId="formBasicPassword">
         <Form.Label>Password</Form.Label>
-        <Form.Control type="password" placeholder="Password" />
+        <Form.Control 
+          onChange={(e) => setPasswordInput(e.target.value)}
+          type="password" 
+          placeholder="Password" 
+        />
       </Form.Group>
       
       <Button variant="primary" type="submit">
@@ -28,7 +48,7 @@ function SignupForm() {
   );
 }
 
-export default SignupForm;
+export default SignUp;
 
 
 
