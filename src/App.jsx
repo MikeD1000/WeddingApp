@@ -8,7 +8,8 @@ import logo from './images/logo.png';
 import './App.css';
 import ImageCrop from './components/ImageCrop';
 import Nbar from './components/Nbar';
-import SignupForm from './components/SignupForm';
+import Signup from './components/SignupForm';
+import Loginout from './components/LoginoutForm';
 import ThemeProvider from 'react-bootstrap/ThemeProvider'
 import { api } from './utilities'
 
@@ -132,7 +133,11 @@ App.jsx
       </div> 
       <div className='pageContainer'>
       <p className='infoText'>Signup Form</p> 
-      <SignupForm></SignupForm>
+      <Signup></Signup>
+      </div>
+      <div className='pageContainer'>
+      <p className='infoText'>Login/Logout Form</p> 
+      <Loginout></Loginout>
       </div>
 
     </ThemeProvider>
