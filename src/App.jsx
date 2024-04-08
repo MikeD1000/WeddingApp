@@ -1,6 +1,6 @@
 
 // import {Navbar, Container, Nav, NavDropdown} from 'react-bootstrap';  
-// import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import weddingHome from './images/weddingHome.jpg';
 import logo from './images/logo.png';
@@ -8,11 +8,21 @@ import logo from './images/logo.png';
 import './App.css';
 import ImageCrop from './components/ImageCrop';
 import Nbar from './components/Nbar';
-import RSVPForm from './components/RSVPForm';
+import SignupForm from './components/SignupForm';
 import ThemeProvider from 'react-bootstrap/ThemeProvider'
+import { api } from './utilities'
 
 function App() {
-  
+  // const {user, setUser} = useState(null)
+App.jsx
+  const test_connection = async() => {
+    const response = await api.get("test/")
+    console.log(response)
+  }
+
+  useEffect(()=>{
+    test_connection()
+  },[])
 
   return (
     <> 
@@ -120,8 +130,8 @@ function App() {
         <p className='imageCenterText'>RSVPs</p>     
       </div> 
       <div className='pageContainer'>
-      <p className='infoText'>RSVP Form</p> 
-      <RSVPForm></RSVPForm>
+      <p className='infoText'>Signup Form</p> 
+      <SignupForm></SignupForm>
       </div>
 
     </ThemeProvider>
