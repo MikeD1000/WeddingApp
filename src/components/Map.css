@@ -1,0 +1,31 @@
+.map-container {
+    position: absolute; /* Set position relative for positioning children */
+    width: 100vw; /* Ensure the map container fills its parent */
+    height: 100vw; /* Ensure the map container fills its parent */
+  }
+  
+  .sidebarStyle {
+    display: inline-block;
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    margin: 12px;
+    background-color: #404040;
+    color: #ffffff;
+    z-index: 1 !important;
+    padding: 6px;
+    font-weight: bold;
+  }
+  
+  .marker {
+    position: absolute;
+    background-color: #4CAF50;
+    border: 1px solid blue;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%); /* Center the marker */
+  }

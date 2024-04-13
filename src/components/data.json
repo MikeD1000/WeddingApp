@@ -1,0 +1,17 @@
+
+{
+    "origin": [
+      {"name": "Chicago", "coordinates": [-87.6298, 41.8781]},
+      {"name": "Buenos Aires", "coordinates": [-58.3816, -34.6037]}
+    ],
+    "destination": {"name": "Destination City", "coordinates": [21.0122, 52.2297]}
+  }
+
+
+
+
+
+
+
+
+

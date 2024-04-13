@@ -21,7 +21,7 @@ const SignUp = () => {
 
   return (
     <Form onSubmit={signupUser}>
-      <Form.Group className="mb-3" controlId="formBasicEmail">
+      <Form.Group className="mb-3" controlId="userBasicEmail">
         <Form.Label>Email address</Form.Label>
         <Form.Control 
           onChange={(e) => setEmailInput(e.target.value)}
@@ -32,7 +32,7 @@ const SignUp = () => {
         </Form.Text>
       </Form.Group>
 
-      <Form.Group className="mb-3" controlId="formBasicPassword">
+      <Form.Group className="mb-3" controlId="userBasicPassword">
         <Form.Label>Password</Form.Label>
         <Form.Control 
           onChange={(e) => setPasswordInput(e.target.value)}
