@@ -1,13 +1,31 @@
 
 {
-    "origin": [
-      {"name": "Chicago", "coordinates": [-87.6298, 41.8781]},
-      {"name": "Buenos Aires", "coordinates": [-58.3816, -34.6037]}
-    ],
-    "destination": {"name": "Destination City", "coordinates": [21.0122, 52.2297]}
-  }
-
-
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-87.6500, 41.8500] 
+        },
+        "properties": {
+          "title": "Chicago",
+          "description": "Origin city - Chicago"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-58.3816, -34.6037]  
+        },
+        "properties": {
+          "title": "Buenos Aires",
+          "description": "Origin city - Buenos Aires"
+        }
+      }
+    ]
+}
 
 
 
