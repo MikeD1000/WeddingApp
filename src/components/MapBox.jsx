@@ -1,17 +1,19 @@
 // import { api } from "../utilities";
 import mapboxgl from 'mapbox-gl';
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { createRoot } from 'react-dom/client';
 import geoJson from './data.json';
 import '@turf/helpers'; // Importing turf helpers for creating point features
 import greatCircle from '@turf/great-circle'; // Importing greatCircle function from turf
 import './Map.css';
-
+import { api } from "../utilities";
 mapboxgl.accessToken = '';
 
 const Marker = ({ onClick, children, feature }) => {
-  const _onClick = () => {
-    onClick(feature.properties.description);
+    const { title, description } = feature.properties;
+    
+    const _onClick = () => {
+        onClick(description);
   };
 
   return (
@@ -22,11 +24,33 @@ const Marker = ({ onClick, children, feature }) => {
 };
 
   
-  const Map = () => {
+  const Map = ({ token }) => {
     const mapContainerRef = useRef(null);
-  
+    
+    // Begin new ChatGPT implementation
+    const [geoJsonData, setGeoJsonData] = useState(null);
+    
     useEffect(() => {
-      if (!mapContainerRef.current) return;
+        const fetchGeoJSONData = async () => {
+          try {
+            const usertoken = localStorage.getItem('token');
+            console.log(usertoken)
+            const response = await api.get('geojson/', {
+              headers: {
+                Authorization: `Token ${usertoken}`}
+            });
+            setGeoJsonData(response.data);
+          } catch (error) {
+            setGeoJsonData(null)
+            console.error('Error fetching GeoJSON data:', error);
+          }
+        };
+    
+        fetchGeoJSONData();
+      }, [token]);
+    
+    useEffect(() => {
+        if (!mapContainerRef.current || !geoJsonData) return;
   
       try {
         const map = new mapboxgl.Map({
@@ -37,7 +61,7 @@ const Marker = ({ onClick, children, feature }) => {
         });
   
         // Render custom marker components
-        geoJson.features.forEach((feature) => {
+        geoJsonData.features.forEach((feature) => {
           const { title, description } = feature.properties;
           const coordinates = feature.geometry.coordinates;
   
@@ -53,7 +77,7 @@ const Marker = ({ onClick, children, feature }) => {
         });
   
         // Add flight routes
-        geoJson.features.forEach((feature) => {
+        geoJsonData.features.forEach((feature) => {
           const origin = feature.geometry.coordinates;
           const destination = [21.0122,52.2297]; // Destination coordinates
   
@@ -84,7 +108,7 @@ const Marker = ({ onClick, children, feature }) => {
       } catch (error) {
         console.error('Error initializing map:', error);
       }
-    }, [mapContainerRef.current, geoJson.features]);
+    }, [mapContainerRef.current, geoJsonData]);
   
     const markerClicked = (title) => {
       window.alert(title);

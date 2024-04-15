@@ -3,9 +3,10 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { api } from "../utilities";
 
-const SignUp = () => {
+const SignUp = ({ handleToken }) => {
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   const signupUser = async(e) => {
     e.preventDefault();
@@ -14,12 +15,15 @@ const SignUp = () => {
       console.log('successfuly signed up, user info', response.data);
       const { token, user } = response.data;
       localStorage.setItem("token", token)
+      handleToken(token)
       api.defaults.headers.common["Authorization"] = `Token ${token}`
+      setShowSuccessMessage(true);
     }
   };
 
 
   return (
+  <div>
     <Form onSubmit={signupUser}>
       <Form.Group className="mb-3" controlId="userBasicEmail">
         <Form.Label>Email address</Form.Label>
@@ -45,6 +49,13 @@ const SignUp = () => {
         Submit
       </Button>
     </Form>
+
+    {showSuccessMessage && (
+        <div className="mt-3 alert alert-success" role="alert">
+          You are signed up and logged in. Press the Logout button on the Login/Logout Form to log out.
+        </div>
+      )}
+    </div>
   );
 }
 

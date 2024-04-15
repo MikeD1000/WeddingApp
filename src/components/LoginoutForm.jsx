@@ -3,11 +3,11 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { api } from "../utilities";
 
-const Loginout = () => {
+const Loginout = ({ token, handleToken }) => {
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [token, setToken] = useState("");
+  // const [token, setToken] = useState("");
   useEffect(() => {
     // Check if the user is logged in
     const token = localStorage.getItem("token");
@@ -15,7 +15,7 @@ const Loginout = () => {
     if (token){
         api.defaults.headers.common["Authorization"] = `Token ${token}`
         setIsLoggedIn(!!token)}
-    }, []);
+    }, [token]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,7 +27,7 @@ const Loginout = () => {
         });
         localStorage.removeItem("token");
         setIsLoggedIn(false);
-        setToken("");
+        handleToken("");
       } else {
         // Login logic
         console.log(emailInput, passwordInput)
@@ -36,7 +36,7 @@ const Loginout = () => {
           const { token } = response.data;
           localStorage.setItem("token", token);
           api.defaults.headers.common["Authorization"] = `Token ${token}`
-          setToken(token);
+          handleToken(token);
           setIsLoggedIn(true);
         }
       }
@@ -46,6 +46,7 @@ const Loginout = () => {
   };
 
   return (
+  <div>
     <Form onSubmit={handleSubmit}>
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label>Email address</Form.Label>
@@ -74,6 +75,13 @@ const Loginout = () => {
         {isLoggedIn ? 'Logout' : 'Login'}
       </Button>
     </Form>
+
+    {isLoggedIn && (
+        <div className="mt-3 alert alert-success" role="alert">
+          You are logged in. Press the Logout button to log out.
+        </div>
+      )}
+    </div>
   );
 }
 
