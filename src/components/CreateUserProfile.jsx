@@ -32,6 +32,13 @@ const CreateUserProfile = ({ token }) => {
     setEvent3Attending(!event3Attending);
   };
 
+  const selectedEvents = [];
+    if (event1Attending) selectedEvents.push(1); // Assuming event IDs are 1, 2, 3
+    if (event2Attending) selectedEvents.push(2);
+    if (event3Attending) selectedEvents.push(3);
+
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -44,9 +51,7 @@ const CreateUserProfile = ({ token }) => {
             state,
             postal_code: postalCode,
             country,
-            event1_attending: event1Attending,
-            event2_attending: event2Attending,
-            event3_attending: event3Attending,
+            event_ids: selectedEvents,
           }
           console.log('profile',newprofile)
       const response = await api.post("users/create_profile/", newprofile);
