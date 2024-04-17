@@ -58,7 +58,7 @@ const WorldMap = ({ token, formSubmitted }) => {
         };
 
         fetchGeoJSONData();
-    }, [token, formSubmitted]);
+    }, [token, ]);
 
     useEffect(() => {
         if (map && geoJsonData) {

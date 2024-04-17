@@ -11,7 +11,7 @@ import Signup from "./components/SignupForm";
 import Loginout from "./components/LoginoutForm";
 import CreateUserProfile from "./components/CreateUserProfile";
 import WorldMap from "./components/MapBox";
-
+import ScheduleComponent from "./components/Schedule";
 import ThemeProvider from "react-bootstrap/ThemeProvider";
 import { api } from "./utilities";
 
@@ -69,10 +69,19 @@ function App() {
         </div>
 
         <div className="pageContainer" id="about us">
-          <p className="infoText">
-            We're excited to invite you to our wedding, XYZ about us
+  <div className="container">
+    <div className="row">
+      <div className="col-lg-8 offset-lg-2">
+        <div className="text-center">
+          <h2>Thank You for Being a Part of Our Special Day!</h2>
+          <p className="lead">
+            We are incredibly grateful to have you spend our wedding day with us. Your presence will make our celebration even more memorable. Thank you for your love, support, and well wishes. We look forward to enjoying the festivities with you!
           </p>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
 
         <div className="pageContainer" id="schedule">
           <ImageCrop>
@@ -81,7 +90,7 @@ function App() {
           <p className="imageCenterText">Schedule</p>
         </div>
         <div className="pageContainer">
-          <p className="infoText">Stuff about the schedule</p>
+          <ScheduleComponent />
         </div>
 
         <div className="pageContainer" id="travel">
