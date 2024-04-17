@@ -3,7 +3,8 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { api } from "../utilities";
 
-const CreateUserProfile = ({ token }) => {
+
+const CreateUserProfile = ({ handleForm, formSubmitted }) => {
   const [name, setName] = useState("");
   const [dietRestrict, setDietRestrict] = useState("");
   const [danceSong, setDanceSong] = useState("");
@@ -15,7 +16,7 @@ const CreateUserProfile = ({ token }) => {
   const [event1Attending, setEvent1Attending] = useState(false);
   const [event2Attending, setEvent2Attending] = useState(false);
   const [event3Attending, setEvent3Attending] = useState(false);
-  const [formSubmitted, setFormSubmitted] = useState(false);
+
 
   const handleToggleEvent1 = () => {
     console.log('event1')
@@ -56,7 +57,7 @@ const CreateUserProfile = ({ token }) => {
           console.log('profile',newprofile)
       const response = await api.post("users/create_profile/", newprofile);
       if (response.status === 201) {
-        setFormSubmitted(true);
+        handleForm();
       }
     } catch (error) {
       console.error("Error:", error);

@@ -51,6 +51,23 @@
     flex-direction: column;
 }
 
+.pageContainer2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200vh;
+    width: 100vw;
+    flex-direction: column;
+}
+
 body{
     margin:0;
 }
+
+#map-container {
+    height: 400px;
+  }
+  
+.leaflet-container {
+    height: inherit;
+  }

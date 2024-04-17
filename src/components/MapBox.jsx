@@ -7,119 +7,236 @@ import '@turf/helpers'; // Importing turf helpers for creating point features
 import greatCircle from '@turf/great-circle'; // Importing greatCircle function from turf
 import './Map.css';
 import { api } from "../utilities";
-mapboxgl.accessToken = '';
 
-const Marker = ({ onClick, children, feature }) => {
-    const { title, description } = feature.properties;
-    
-    const _onClick = () => {
-        onClick(description);
-  };
 
-  return (
-    <button onClick={_onClick} className="marker">
-      {children}
-    </button>
-  );
-};
+
 
   
-  const Map = ({ token }) => {
+const WorldMap = ({ token, formSubmitted }) => {
     const mapContainerRef = useRef(null);
-    
-    // Begin new ChatGPT implementation
+    const [map, setMap] = useState(null);
     const [geoJsonData, setGeoJsonData] = useState(null);
-    
+
+    // // Define markerClicked function
+    // const markerClicked = (description) => {
+    //     console.log('Marker clicked:', description);
+    // };
+
+    useEffect(() => {
+        mapboxgl.accessToken = import.meta.env.VITE_APP_MAP_BOX_ACCESS_TOKEN;
+        const initializedMap = new mapboxgl.Map({
+            container: mapContainerRef.current,
+            style: "mapbox://styles/mapbox/standard",
+            center: [-87.65, 41.84],
+            zoom: 2,
+            attributionControl: false,
+        });
+
+        // Save the map instance to state
+        setMap(initializedMap);
+
+        // Cleanup function to remove the map instance
+        return () => {
+            initializedMap.remove();
+        };
+    }, []);
+
     useEffect(() => {
         const fetchGeoJSONData = async () => {
-          try {
-            const usertoken = localStorage.getItem('token');
-            console.log(usertoken)
-            const response = await api.get('geojson/', {
-              headers: {
-                Authorization: `Token ${usertoken}`}
-            });
-            setGeoJsonData(response.data);
-          } catch (error) {
-            setGeoJsonData(null)
-            console.error('Error fetching GeoJSON data:', error);
-          }
+            try {
+                const usertoken = localStorage.getItem('token');
+                const response = await api.get('geojson/', {
+                    headers: {
+                        Authorization: `Token ${usertoken}`
+                    }
+                });
+                setGeoJsonData(response.data);
+            } catch (error) {
+                setGeoJsonData(null);
+                console.error('Error fetching GeoJSON data:', error);
+            }
         };
-    
+
         fetchGeoJSONData();
-      }, [token]);
-    
+    }, [token, formSubmitted]);
+
     useEffect(() => {
-        if (!mapContainerRef.current || !geoJsonData) return;
-  
-      try {
-        const map = new mapboxgl.Map({
-          container: mapContainerRef.current,
-          style: 'mapbox://styles/mapbox/streets-v11',
-          center: [-87.65, 41.84],
-          zoom: 2,
-        });
-  
-        // Render custom marker components
-        geoJsonData.features.forEach((feature) => {
-          const { title, description } = feature.properties;
-          const coordinates = feature.geometry.coordinates;
-  
-          const ref = React.createRef();
-          ref.current = document.createElement('div');
-          createRoot(ref.current).render(
-            <Marker onClick={markerClicked} feature={feature} />
-          );
-  
-          new mapboxgl.Marker(ref.current)
-            .setLngLat(coordinates)
-            .addTo(map);
-        });
-  
-        // Add flight routes
-        geoJsonData.features.forEach((feature) => {
-          const origin = feature.geometry.coordinates;
-          const destination = [21.0122,52.2297]; // Destination coordinates
-  
-          // Calculate great circle route
-          const route = greatCircle(origin, destination, {
-            properties: { name: feature.properties.title },
-          });
-          console.log(route);
-  
-          // Add the route to the map
-          map.on('load', () => {
-            map.addLayer({
-              id: feature.properties.title,
-              type: 'line',
-              source: {
-                type: 'geojson',
-                data: route,
-              },
-              paint: {
-                'line-width': 2,
-                'line-color': '#FF0000',
-              },
+        if (map && geoJsonData) {
+            geoJsonData.features.forEach((feature) => {
+                const origin = feature.geometry.coordinates;
+                const destination = [21.0122, 52.2297]; // Destination coordinates
+            
+                // Calculate great circle route
+                const route = greatCircle(origin, destination, {
+                    properties: { name: feature.properties.title },
+                });
+            
+                // Add the route to the map
+                map.addLayer({
+                    id: feature.properties.title,
+                    type: 'line',
+                    source: {
+                        type: 'geojson',
+                        data: route,
+                    },
+                    paint: {
+                        'line-width': 2,
+                        'line-color': '#FF0000',
+                    },
+                });
             });
-          });
-        });
-  
-        return () => map.remove();
-      } catch (error) {
-        console.error('Error initializing map:', error);
-      }
-    }, [mapContainerRef.current, geoJsonData]);
-  
-    const markerClicked = (title) => {
-      window.alert(title);
-    };
-  
-    return <div className="map-container" ref={mapContainerRef} />;
-  };
-  
-  export default Map;
+            
+            // Cleanup function to remove the added layers when component unmounts
+            return () => {
+                geoJsonData.features.forEach((feature) => {
+                    map.removeLayer(feature.properties.title);
+                });
+            };
+        }
+    }, [map, geoJsonData]);
+
+    return (
+        <div>
+            <div>
+                <div
+                    className="d-block rounded mx-auto img-fluid w-75"
+                    ref={mapContainerRef}
+                    style={{
+                        width: "75vw",
+                        height: "100vh",
+                        border: "1px solid",
+                        marginBottom: "3rem",
+                    }}
+                />
+            </div>
+        </div>
+    );
+};
+
+export default WorldMap;
 
 
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+   
+    
+    
+
+//     useEffect(() => {
+//         const fetchGeoJSONData = async () => {
+//           try {
+//             const usertoken = localStorage.getItem('token');
+//             console.log(usertoken)
+//             const response = await api.get('geojson/', {
+//               headers: {
+//                 Authorization: `Token ${usertoken}`}
+//             });
+//             setGeoJsonData(response.data);
+//           } catch (error) {
+//             setGeoJsonData(null)
+//             console.error('Error fetching GeoJSON data:', error);
+//           }
+//         };
+    
+//         fetchGeoJSONData();
+//       }, [token]);
+    
+//     useEffect(() => {
+//         if (!mapContainerRef.current || !geoJsonData) return;
+  
+//       try {
+//         const map = new mapboxgl.Map({
+//           container: mapContainerRef.current,
+//           style: 'mapbox://styles/mapbox/streets-v11',
+//           center: [-87.65, 41.84],
+//           zoom: 2,
+//         });
+  
+//         // Render custom marker components
+//         geoJsonData.features.forEach((feature) => {
+//           const { title, description } = feature.properties;
+//           const coordinates = feature.geometry.coordinates;
+  
+//           const ref = React.createRef();
+//           ref.current = document.createElement('div');
+//           createRoot(ref.current).render(
+//             <Marker onClick={markerClicked} feature={feature} />
+//           );
+  
+//           new mapboxgl.Marker(ref.current)
+//             .setLngLat(coordinates)
+//             .addTo(map);
+//         });
+  
+//         // Add flight routes
+//         geoJsonData.features.forEach((feature) => {
+//           const origin = feature.geometry.coordinates;
+//           const destination = [21.0122,52.2297]; // Destination coordinates
+  
+//           // Calculate great circle route
+//           const route = greatCircle(origin, destination, {
+//             properties: { name: feature.properties.title },
+//           });
+//           console.log(route);
+  
+//           // Add the route to the map
+//           map.on('load', () => {
+//             map.addLayer({
+//               id: feature.properties.title,
+//               type: 'line',
+//               source: {
+//                 type: 'geojson',
+//                 data: route,
+//               },
+//               paint: {
+//                 'line-width': 2,
+//                 'line-color': '#FF0000',
+//               },
+//             });
+//           });
+//         });
+  
+//         return () => map.remove();
+//       } catch (error) {
+//         console.error('Error initializing map:', error);
+//       }
+//     }, [mapContainerRef.current, geoJsonData]);
+  
+//     const markerClicked = (title) => {
+//       window.alert(title);
+//     };
+  
+//     return <div className="map-container" ref={mapContainerRef} />;
+//   };
+  
+// return (
+//     <div>
+//       <div>
+//         <div
+//           className="d-block rounded mx-auto img-fluid w-75"
+//           ref={mapContainerRef}
+//           style={{
+//             width: "75vw",
+//             height: "100vh",
+//             border: "1px solid",
+//             marginBottom: "3rem",
+//           }}
+//         />
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default WorldMap;
 
 
 
