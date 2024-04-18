@@ -42,10 +42,8 @@ const Nbar = () => {
                 <Nav.Link href="#schedule">Schedule</Nav.Link>
                 <Nav.Link href="#travel">Travel</Nav.Link>
                 <Nav.Link href="#registry">Registry</Nav.Link>
-                <Nav.Link href="#gallery">Gallery</Nav.Link>
+                <Nav.Link href="#venue">The Venue</Nav.Link>
                 <Nav.Link href="#things to do">Things to do</Nav.Link>
-                <Nav.Link href="#faqs">FAQs</Nav.Link>
-                <Nav.Link href="#our guests">Our Guests</Nav.Link>
                 <Nav.Link href="#rsvps">RSVPs</Nav.Link>
                 
                 {/* <NavDropdown title="Dropdown" id="basic-nav-dropdown">  

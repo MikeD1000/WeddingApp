@@ -86,7 +86,7 @@ body{
     border-radius: 5px;
     padding: 20px;
     width: 300px; /* Adjust width as needed */
-    height: 300px; /* Adjust height as needed */
+    /* height: 500px; Adjust height as needed */
     margin: 0 10px; /* Adjust margin as needed */
     display: flex;
     flex-direction: column; /* Display content vertically */
